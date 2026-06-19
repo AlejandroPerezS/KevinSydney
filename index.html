@@ -368,6 +368,29 @@
             border-top: 1px solid var(--glass-border);
             letter-spacing: 1px;
         }
+        .agency-credit {
+            font-size: 0.75rem; /* Keeps it small and unobtrusive */
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.5; /* Makes it fade into the background */
+            transition: opacity 0.3s ease;
+        }
+        
+        .agency-credit:hover {
+            opacity: 0.9; /* Brightens up slightly when the user mouses over the area */
+        }
+        
+        .agency-credit a {
+            color: inherit; /* Inherits the muted color from the paragraph */
+            text-decoration: none; /* Removes the default harsh underline */
+            border-bottom: 1px solid transparent;
+            padding-bottom: 2px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .agency-credit a:hover {
+            border-color: currentColor; /* Adds a clean, subtle underline on hover */
+        }
 
         /* Scroll Animations */
         .fade-in {
@@ -501,7 +524,7 @@
 
     <footer>
         <p>&copy; 2026 Kevin Walters. All rights reserved.</p>
-        <p><a href="https://timelessventures.ca">Powered By Timeless Ventures</a></p>
+        <p class="agency-credit"><a href="https://timelessventures.ca" target="_blank" rel="noopener noreferrer">Powered By Timeless Ventures</a></p>
     </footer>
 
     <!-- Scripts -->
