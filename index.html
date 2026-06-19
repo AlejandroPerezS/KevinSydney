@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Official website for Kevin Walters (Kevin Sydney). Explore latest music releases, tour dates, and news.">
+    <title>Kevin Walters | Official Artist Site</title>
+    <style>
+        /* Base Variables */
+        :root {
+            --text-main: #f5f5f5;
+            --text-muted: #e0e0e0;
+            --accent: #e2c044; /* Warm Caribbean Gold */
+            --accent-hover: #ffdf73;
+            /* Glassmorphism settings */
+            --glass-bg: rgba(20, 10, 35, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            /* Remove solid background to let the animation show through */
+            background-color: #050208; 
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* -------------------------------------------
+           GLOBAL MAGICAL BACKGROUND
+        -------------------------------------------- */
+        #global-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(-45deg, #0a0510, #2e1065, #450a0a, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientPan 20s ease infinite;
+            z-index: -2;
+        }
+        @keyframes gradientPan {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Notes Container */
+        #animation-container {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .floating-note {
+            position: absolute;
+            color: var(--accent);
+            font-family: Arial, sans-serif;
+            pointer-events: none;
+            opacity: 0;
+            animation: floatUp linear infinite;
+            text-shadow: 0 0 15px rgba(226, 192, 68, 0.6);
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; }
+            15% { opacity: 0.6; }
+            85% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+
+        /* -------------------------------------------
+           TYPOGRAPHY & STRUCTURE
+        -------------------------------------------- */
+        section {
+            padding: 7rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        h2 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+            margin-bottom: 3rem;
+            padding-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(5, 2, 8, 0.6);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-main);
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(226, 192, 68, 0.4);
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* -------------------------------------------
+           HERO SECTION
+        -------------------------------------------- */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 1rem;
+        }
+        .hero-image-mask {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('9174.jpg') center/cover no-repeat;
+            opacity: 0.4; /* Lets the moving colors shine through the photo */
+            z-index: 1;
+            /* Smoothly fades the image out at the bottom */
+            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 5;
+            animation: fadeInDown 1.5s ease forwards;
+        }
+        h1 {
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.9);
+        }
+        .subtitle {
+            color: var(--accent);
+            font-size: 1.3rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.9);
+        }
+
+        /* -------------------------------------------
+           GLASSMORPHISM CONTENT SECTIONS
+        -------------------------------------------- */
+        /* About Section */
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .about-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 1px solid var(--glass-border);
+        }
+        .about-text p {
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* Discography Grid */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+        .cd-card {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .cd-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: center;
+        }
+        .cd-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            background-color: rgba(30, 15, 45, 0.5);
+        }
+        .cd-card:hover::before {
+            transform: scaleX(1);
+        }
+        .cd-placeholder {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        .cd-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .cd-year {
+            color: var(--accent);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: transparent;
+            color: var(--text-main);
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        .btn:hover {
+            background-color: var(--accent);
+            color: #000;
+            box-shadow: 0 0 20px rgba(226, 192, 68, 0.6);
+        }
+
+        /* Upcoming Section */
+        .upcoming-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 3rem;
+            align-items: flex-start;
+        }
+        .live-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 1px solid var(--glass-border);
+        }
+        .shows-list {
+            list-style: none;
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .show-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+            transition: background-color 0.3s ease;
+        }
+        .show-item:hover {
+            background-color: rgba(255,255,255,0.05);
+        }
+        .show-item:last-child {
+            border-bottom: none;
+        }
+        .show-date {
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        .show-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 1rem;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--glass-border);
+            letter-spacing: 1px;
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .about-container, .upcoming-container {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            section {
+                padding: 5rem 1.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .show-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            .show-item .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MAGICAL GLOBAL BACKGROUND -->
+    <div id="global-bg"></div>
+    <div id="animation-container"></div>
+
+    <nav>
+        <a href="#" class="nav-logo">K. Walters</a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#discography">Music</a></li>
+            <li><a href="#upcoming">Live</a></li>
+        </ul>
+    </nav>
+
+    <header id="home">
+        <!-- Masked Hero Image Layer -->
+        <div class="hero-image-mask"></div>
+        
+        <div class="hero-content">
+            <h1>Kevin Walters</h1>
+            <p class="subtitle">Caribbean Soul & Sound</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- About Section -->
+        <section id="about" class="fade-in">
+            <div class="about-container">
+                <div class="about-image">
+                    <img src="9173.jpg" alt="Kevin Walters Portrait">
+                </div>
+                <div class="about-text">
+                    <h2>The Artist</h2>
+                    <p>Drawing deeply from his Caribbean roots, Kevin Walters weaves intricate narratives of life, love, and rhythm. His sound is a magical blend of traditional acoustics and modern, atmospheric production.</p>
+                    <p>Whether he's performing an intimate acoustic set or commanding a festival stage, his music invites listeners into a warm, captivating world of emotion and authenticity.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discography Section -->
+        <section id="discography" class="fade-in">
+            <h2>Releases</h2>
+            <div class="music-grid">
+                
+                <article class="cd-card">
+                    <div class="cd-placeholder">[ Album Art ]</div>
+                    <h3 class="cd-title">Alone With You In An Old Jazz Bar</h3>
+                    <p class="cd-year">Vinyl / CD</p>
+                    <a href="https://elasticstage.com/kevinsydney?utm_source=linktree_profile_share" target="_blank" rel="noopener noreferrer" class="btn">Buy Album</a>
+                </article>
+
+                <article class="cd-card">
+                    <div class="cd-placeholder">[ Album Art ]</div>
+                    <h3 class="cd-title">I Would Die First</h3>
+                    <p class="cd-year">Vinyl / CD</p>
+                    <a href="https://elasticstage.com/kevinsydney?utm_source=linktree_profile_share" target="_blank" rel="noopener noreferrer" class="btn">Buy Album</a>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Upcoming Section -->
+        <section id="upcoming" class="fade-in">
+            <h2>Live & News</h2>
+            <div class="upcoming-container">
+                <div class="live-image">
+                    <img src="9172.jpg" alt="Kevin Walters Live Performance">
+                </div>
+                <ul class="shows-list">
+                    <li class="show-item">
+                        <div class="show-details">
+                            <span class="show-date">Coming Soon</span>
+                            <p class="show-title">Live Performance Dates & Tour Announcements</p>
+                        </div>
+                        <a href="#" class="btn">Stay Tuned</a>
+                    </li>
+                    <li class="show-item">
+                        <div class="show-details">
+                            <span class="show-date">Recent Release</span>
+                            <p class="show-title">New Vinyl Pressings Available Worldwide</p>
+                        </div>
+                        <a href="https://elasticstage.com/kevinsydney?utm_source=linktree_profile_share" target="_blank" rel="noopener noreferrer" class="btn">Visit Store</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kevin Walters. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // 1. Scroll Fade-in Observer
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('appear');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+
+            // 2. Global Floating Notes Generator
+            function createFloatingNotes() {
+                const container = document.getElementById('animation-container');
+                const musicalSymbols = ['♪', '♫', '♬', '♩', '♭', '♮'];
+                // Increased note count slightly to fill the full vertical page seamlessly
+                const numberOfNotes = 25; 
+
+                for (let i = 0; i < numberOfNotes; i++) {
+                    const note = document.createElement('div');
+                    note.classList.add('floating-note');
+                    
+                    note.innerText = musicalSymbols[Math.floor(Math.random() * musicalSymbols.length)];
+                    
+                    // Randomized positioning across the entire viewport width
+                    const startPos = Math.random() * 100; // 0 to 100vw
+                    const duration = 10 + Math.random() * 15; // 10s to 25s for slow, magical drifting
+                    const delay = Math.random() * 10; // Stagger the start times
+                    const size = 1 + Math.random() * 2.5; // Random sizes
+
+                    note.style.left = `${startPos}vw`;
+                    note.style.animationDuration = `${duration}s`;
+                    note.style.animationDelay = `${delay}s`;
+                    note.style.fontSize = `${size}rem`;
+
+                    container.appendChild(note);
+                }
+            }
+
+            createFloatingNotes();
+        });
+    </script>
+</body>
+</html>
